@@ -1,0 +1,4 @@
+{
+    "__doc__":              "Configuration used by the tests",
+    "database_url":         "sqlite:///:memory:"
+}

@@ -1,0 +1,7 @@
+/README.html
+/tags
+/.tox
+/venv*
+/*.egg-info
+*.py[cod]
+*.swp

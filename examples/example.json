@@ -1,0 +1,10 @@
+{
+	"__doc__": "The __include__ directive includes other files.",
+	"__doc__": "__include__ can be either a string or an array-of-string.",
+	"__doc__": "The values defined here are overriden by the included file",
+
+	"example": 42,
+	"key": "value",
+
+	"__include__": "overrides.json"
+}
