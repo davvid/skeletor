@@ -36,11 +36,11 @@ class Table(object):
             row_id = table.insert(kwargs).execute().lastrowid
         except IntegrityError as e:
             self.logger.error('new: integrity error in %s with kwargs %s (%s)'
-                              % (self.table, repr(kwargs), e.message))
+                              % (self.table, repr(kwargs), repr(e)))
             return None
         except BaseException as e:
             self.logger.error('new: unknown error in %s with kwargs %s (%s)'
-                              % (self.table, repr(kwargs), e.message))
+                              % (self.table, repr(kwargs), repr(e)))
             return None
         return sql.select(table, id=row_id)
 

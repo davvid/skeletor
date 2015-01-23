@@ -34,3 +34,10 @@ try:
     unichr = unichr
 except NameError:
     unichr = chr
+
+try:
+    # python3
+    from functools import reduce
+except ImportError:
+    # python2
+    pass

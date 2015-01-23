@@ -1,5 +1,7 @@
 from sqlalchemy import and_
 
+from skeletor.core.compat import reduce
+
 
 def rowdict(row):
     if row is None:

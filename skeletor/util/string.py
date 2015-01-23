@@ -15,11 +15,11 @@ def expandvars(path, environ=None):
 
     `os.environ` is used when `environ` is None.
 
-    >>> expandvars('$foo', environ={'foo': 'bar'})
-    'bar'
+    >>> expandvars('$foo', environ={'foo': 'bar'}) == 'bar'
+    True
 
-    >>> expandvars('$foo:$bar:${foo}${bar}', environ={'foo': 'a', 'bar': 'b'})
-    'a:b:ab'
+    >>> expandvars('$foo:$bar:${foo}${bar}', environ={'foo': 'a', 'bar': 'b'})  == 'a:b:ab'
+    True
 
     """
     global _expandvars_re
