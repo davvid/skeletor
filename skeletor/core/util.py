@@ -4,24 +4,6 @@ import random
 import uuid
 
 
-def decode(string):
-    """decode(encoded_string) returns an unencoded unicode string
-    """
-    # Some files are not in UTF-8; some other aren't in any codification.
-    # Remember that GIT doesn't care about encodings (saves binary data)
-    if type(string) is unicode:
-        return string
-    return string.decode('utf-8')
-
-
-def encode(string):
-    """encode(unencoded_string) returns a string encoded in utf-8
-    """
-    if type(string) is not unicode:
-        return string
-    return string.encode('utf-8', 'replace')
-
-
 def deep_update(a, b):
     """Allow piece-wise overriding of dictionaries"""
     for k, v in b.items():
@@ -29,11 +11,6 @@ def deep_update(a, b):
             deep_update(a[k], v)
         else:
             a[k] = v
-
-
-def expand_path(path):
-    """Resolve $VARIABLE and ~user paths"""
-    return os.path.expanduser(os.path.expandvars(path))
 
 
 def import_string(modstr):
