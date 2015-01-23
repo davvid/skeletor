@@ -69,11 +69,11 @@ class User(object):
 
     @decorators.staticmethod_query
     def filter_by(context=None, **filters):
-        return sql.select(context.users, **filters)
+        return sql.select_one(context.users, **filters)
 
     @decorators.staticmethod_query
     def find_by_id(user_id, context=None):
-        return sql.select(context.users, id=user_id)
+        return sql.select_one(context.users, id=user_id)
 
     @decorators.staticmethod_mutator
     def update(user_id, context=None, **kwargs):

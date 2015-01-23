@@ -25,8 +25,8 @@ def fetchone(table, where_expr):
     return rowdict(expr.execute().fetchone())
 
 
-def select(table, operator=and_, **where):
-    """Select one row filtered by `where` column=value criteria"""
+def where_clause(table, operator=and_, **where):
+    """Return a `where` expression to combine column=value criteria"""
     # Create a list of (column == value) filters and combine them using the
     # provided combinator.
     filters = [(getattr(table.c, k) == v) for k, v in where.items()]
@@ -36,8 +36,19 @@ def select(table, operator=and_, **where):
         where_expr = filters[0]
     else:
         where_expr = reduce(operator, filters)
+    return where_expr
 
+
+def select_one(table, operator=and_, **where):
+    """Select one row filtered by `where` column=value criteria"""
+    where_expr = where_clause(table, operator=operator, **where)
     return fetchone(table, where_expr)
+
+
+def select_all(table, operator=and_, **where):
+    """Select all rows filtered by `where` column=value criteria"""
+    where_expr = where_clause(table, operator=operator, **where)
+    return table.select().where(where_expr).execute().fetchall()
 
 
 def update_values(table, where_expr, **values):

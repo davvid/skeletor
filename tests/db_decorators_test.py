@@ -17,11 +17,11 @@ def creator(commit=False):
 
 
 @decorators.query
-def select(context=None, **kwargs):
-    return sql.select(context.users, **kwargs)
+def select_one(context=None, **kwargs):
+    return sql.select_one(context.users, **kwargs)
 
 
-bound_select = core_decorators.bind(creator=creator)(select)
+bound_select_one = core_decorators.bind(creator=creator)(select_one)
 
 
 class DBDecoratorsTestCase(unittest.TestCase):
@@ -65,17 +65,17 @@ class DBDecoratorsTestCase(unittest.TestCase):
 
 
     def test_creator(self):
-        user = select(email='test@example.com', creator=creator)
+        user = select_one(email='test@example.com', creator=creator)
         self.assertEqual(user['name'], 'test')
 
-        user = select(name='test', creator=creator)
+        user = select_one(name='test', creator=creator)
         self.assertEqual(user['email'], 'test@example.com')
 
     def test_bound_creator(self):
-        user = bound_select(email='test@example.com')
+        user = bound_select_one(email='test@example.com')
         self.assertEqual(user['name'], 'test')
 
-        user = bound_select(name='test')
+        user = bound_select_one(name='test')
         self.assertEqual(user['email'], 'test@example.com')
 
 

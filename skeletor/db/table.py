@@ -42,7 +42,7 @@ class Table(object):
             self.logger.error('new: unknown error in %s with kwargs %s (%s)'
                               % (self.table, repr(kwargs), repr(e)))
             return None
-        return sql.select(table, id=row_id)
+        return sql.select_one(table, id=row_id)
 
     @mutator
     def update(self, row_id, context=None, **kwargs):
@@ -57,7 +57,7 @@ class Table(object):
     @query
     def filter_by(self, context=None, **filters):
         table = context.tables[self.table]
-        return sql.select(table, **filters)
+        return sql.select_one(table, **filters)
 
     @query
     def find_by_id(self, row_id, context=None):
