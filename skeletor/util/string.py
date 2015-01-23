@@ -66,6 +66,6 @@ def encode(string):
     return string.encode('utf-8', 'replace')
 
 
-def expand_path(path):
+def expand_path(path, environ=None):
     """Resolve $VARIABLE and ~user paths"""
-    return os.path.expanduser(os.path.expandvars(path))
+    return os.path.expanduser(expandvars(path, environ=environ))

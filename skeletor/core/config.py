@@ -2,14 +2,20 @@ import os
 
 from skeletor.core import json
 from skeletor.core import util
+from skeletor.util import string
 
 
 class Config(object):
     """Read configuration values from a file"""
 
-    def __init__(self, path):
+    def __init__(self, path, environ=None):
         self._data = {}
         self._path = path
+        self.environ = environ
+        self.initialize_environ()
+
+    def initialize_environ(self):
+        pass
 
     def __getitem__(self, item):
         """Allow config[key]"""
@@ -35,14 +41,14 @@ class Config(object):
             # This key has a corresponding environment variable
             # so override the value if the variable is defined.
             value = os.getenv(env, value)
-        return _expand(value)
+        return _expand(value, self.environ)
 
 
 class JSONConfig(Config):
     """Read configuration values from a JSON file"""
 
-    def __init__(self, path):
-        Config.__init__(self, path)
+    def __init__(self, path, environ=None):
+        super(JSONConfig, self).__init__(path, environ=environ)
 
     def read(self):
         if self._data:
@@ -52,11 +58,11 @@ class JSONConfig(Config):
         return self._data
 
 
-def _expand(value):
+def _expand(value, environ):
     if isinstance(value, basestring):
         # Expand string values
-        return util.expand_path(value)
+        return string.expand_path(value, environ)
     if hasattr(value, 'items'):
-        return value.__class__([(k, _expand(v))
+        return value.__class__([(k, _expand(v, environ))
                                 for k, v in value.items()])
     return value
