@@ -62,3 +62,8 @@ class Table(object):
     @query
     def find_by_id(self, row_id, context=None):
         return self.filter_by(id=row_id, context=context)
+
+    @mutator
+    def delete(self, context=None, **filters):
+        table = context.tables[self.table]
+        return sql.delete(table, **filters)

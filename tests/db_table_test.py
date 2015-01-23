@@ -65,6 +65,18 @@ class DBTableTestCase(unittest.TestCase):
         user = self.table.filter_by(name='second', email='a', context=context)
         self.assertEqual(user, None)
 
+    def test_delete(self):
+        context = self.context
+        self.table.new(email='a', context=context)
+        self.table.new(email='b', context=context)
+        all_users = self.table.fetchall(context=context)
+        self.assertEqual(len(all_users), 2)
+
+        self.table.delete(email='a', context=context)
+        all_users = self.table.fetchall(context=context)
+        self.assertEqual(len(all_users), 1)
+        self.assertEqual(all_users[0]['email'], 'b')
+
 
 if __name__ == '__main__':
     unittest.main()

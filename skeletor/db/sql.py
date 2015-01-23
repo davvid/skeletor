@@ -25,29 +25,29 @@ def fetchone(table, where_expr):
     return rowdict(expr.execute().fetchone())
 
 
-def where_clause(table, operator=and_, **where):
+def where(table, operator=and_, **values):
     """Return a `where` expression to combine column=value criteria"""
     # Create a list of (column == value) filters and combine them using the
     # provided combinator.
-    filters = [(getattr(table.c, k) == v) for k, v in where.items()]
+    filters = [(getattr(table.c, k) == v) for k, v in values.items()]
     # If we have multiple filters then combine them using AND by default,
     # otherwise use the first one as-is.
     if len(filters) == 1:
-        where_expr = filters[0]
+        expr = filters[0]
     else:
-        where_expr = reduce(operator, filters)
-    return where_expr
+        expr = reduce(operator, filters)
+    return expr
 
 
-def select_one(table, operator=and_, **where):
-    """Select one row filtered by `where` column=value criteria"""
-    where_expr = where_clause(table, operator=operator, **where)
+def select_one(table, operator=and_, **values):
+    """Select one row filtered by `values` column=value criteria"""
+    where_expr = where(table, operator=operator, **values)
     return fetchone(table, where_expr)
 
 
-def select_all(table, operator=and_, **where):
-    """Select all rows filtered by `where` column=value criteria"""
-    where_expr = where_clause(table, operator=operator, **where)
+def select_all(table, operator=and_, **values):
+    """Select all rows filtered by `values` column=value criteria"""
+    where_expr = where(table, operator=operator, **values)
     return table.select().where(where_expr).execute().fetchall()
 
 
@@ -59,3 +59,9 @@ def update_values(table, where_expr, **values):
 def update(table, table_id, **values):
     """Update a specific row's values by ID"""
     return update_values(table, table.c.id==table_id, **values).execute()
+
+
+def delete(table, operator=and_, **values):
+    """Delete rows from a table based on the filter values"""
+    where_expr = where(table, operator=operator, **values)
+    return table.delete(where_expr).execute()
