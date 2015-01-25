@@ -21,7 +21,43 @@ def select_one(context=None, **kwargs):
     return sql.select_one(context.users, **kwargs)
 
 
-bound_select_one = core_decorators.bind(creator=creator)(select_one)
+explicitly_bound_select_one = core_decorators.bind(creator=creator)(select_one)
+
+
+@core_decorators.bind(creator=creator)
+@decorators.query
+def decorated_bound_select_one(context=None, **kwargs):
+    return sql.select_one(context.users, **kwargs)
+
+
+@decorators.query.bind(creator=creator)
+def fancy_bound_select_one(context=None, **kwargs):
+    return sql.select_one(context.users, **kwargs)
+
+
+class Query(object):
+
+    @decorators.query.bind(creator=creator)
+    def method_select_one(self, context=None, **kwargs):
+        return sql.select_one(context.users, **kwargs)
+
+    @decorators.staticmethod_query.bind(creator=creator)
+    def staticmethod_select_one(context=None, **kwargs):
+        return sql.select_one(context.users, **kwargs)
+
+    @staticmethod
+    @decorators.query.bind(creator=creator)
+    def explicit_staticmethod_select_one(context=None, **kwargs):
+        return sql.select_one(context.users, **kwargs)
+
+    @decorators.classmethod_query.bind(creator=creator)
+    def classmethod_select_one(cls, context=None, **kwargs):
+        return cls.staticmethod_select_one(context=context, **kwargs)
+
+    @classmethod
+    @decorators.query.bind(creator=creator)
+    def explicit_classmethod_select_one(cls, context=None, **kwargs):
+        return cls.staticmethod_select_one(context=context, **kwargs)
 
 
 class DBDecoratorsTestCase(unittest.TestCase):
@@ -63,7 +99,6 @@ class DBDecoratorsTestCase(unittest.TestCase):
         self.assertEqual(all_users[0]['email'], 'a')
         self.assertEqual(all_users[1]['email'], 'b')
 
-
     def test_creator(self):
         user = select_one(email='test@example.com', creator=creator)
         self.assertEqual(user['name'], 'test')
@@ -71,11 +106,60 @@ class DBDecoratorsTestCase(unittest.TestCase):
         user = select_one(name='test', creator=creator)
         self.assertEqual(user['email'], 'test@example.com')
 
-    def test_bound_creator(self):
-        user = bound_select_one(email='test@example.com')
+    def test_explicitly_bound_creator(self):
+        user = explicitly_bound_select_one(email='test@example.com')
         self.assertEqual(user['name'], 'test')
 
-        user = bound_select_one(name='test')
+        user = explicitly_bound_select_one(name='test')
+        self.assertEqual(user['email'], 'test@example.com')
+
+    def test_bound_decorated_creator(self):
+        user = decorated_bound_select_one(email='test@example.com')
+        self.assertEqual(user['name'], 'test')
+
+        user = decorated_bound_select_one(name='test')
+        self.assertEqual(user['email'], 'test@example.com')
+
+    def test_fancy_decorated_creator(self):
+        user = fancy_bound_select_one(email='test@example.com')
+        self.assertEqual(user['name'], 'test')
+
+        user = fancy_bound_select_one(name='test')
+        self.assertEqual(user['email'], 'test@example.com')
+
+    def test_method_with_fancy_bound_creator(self):
+        user = Query().method_select_one(email='test@example.com')
+        self.assertEqual(user['name'], 'test')
+
+        user = Query().method_select_one(name='test')
+        self.assertEqual(user['email'], 'test@example.com')
+
+    def test_staticmethod_with_fancy_bound_creator(self):
+        user = Query.staticmethod_select_one(email='test@example.com')
+        self.assertEqual(user['name'], 'test')
+
+        user = Query.staticmethod_select_one(name='test')
+        self.assertEqual(user['email'], 'test@example.com')
+
+    def test_explicit_staticmethod_with_fancy_bound_creator(self):
+        user = Query.explicit_staticmethod_select_one(email='test@example.com')
+        self.assertEqual(user['name'], 'test')
+
+        user = Query.explicit_staticmethod_select_one(name='test')
+        self.assertEqual(user['email'], 'test@example.com')
+
+    def test_classmethod_with_fancy_bound_creator(self):
+        user = Query.classmethod_select_one(email='test@example.com')
+        self.assertEqual(user['name'], 'test')
+
+        user = Query.classmethod_select_one(name='test')
+        self.assertEqual(user['email'], 'test@example.com')
+
+    def test_explicit_classmethod_with_fancy_bound_creator(self):
+        user = Query.explicit_classmethod_select_one(email='test@example.com')
+        self.assertEqual(user['name'], 'test')
+
+        user = Query.explicit_classmethod_select_one(name='test')
         self.assertEqual(user['email'], 'test@example.com')
 
 

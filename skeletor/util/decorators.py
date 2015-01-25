@@ -125,6 +125,48 @@ class acquire_context(object):
         return self.decorator(wrapper)
 
 
+class bindfunction(object):
+    """Allows fn.bind(foo=bar) when decorated on a function"""
+
+    def __init__(self, fn, decorator=passthrough_decorator):
+        """This decorator is passed an inner decorator"""
+        self.fn = fn
+        self.args = ()
+        self.kwargs = {}
+        self.decorator = decorator
+
+    def bind(self, *args, **kwargs):
+        """bind() stashes arguments"""
+        self.args = args
+        self.kwargs = kwargs
+        return self
+
+    def __call__(self, f):
+        """Invoke the inner decorator and return a bound function
+
+        __call__() is invoked when the function is ready to be decorated.
+        If we've gotten here then bind() was called and we must return the
+        final decorated function.
+
+        """
+        decorated = self.fn(f)
+        return self.decorator(bind(*self.args, **self.kwargs)(decorated))
+
+
+class bindstaticmethod(bindfunction):
+    """Allows fn.bind(foo=bar) and returns a staticmethod"""
+
+    def __init__(self, f):
+        super(bindstaticmethod, self).__init__(f, decorator=staticmethod)
+
+
+class bindclassmethod(bindfunction):
+    """Allows fn.bind(foo=bar) and returns a classmethod"""
+
+    def __init__(self, f):
+        super(bindclassmethod, self).__init__(f, decorator=classmethod)
+
+
 class Context(object):
     """Base class for custom contexts"""
 
@@ -170,7 +212,8 @@ class bind(object):
         @functools.wraps(f)
         def wrapper(*args, **kwargs):
             args = self.args + args
-            kwargs.update(self.kwargs)
-            return f(*args, **kwargs)
+            new_kwargs = self.kwargs.copy()
+            new_kwargs.update(kwargs)
+            return f(*args, **new_kwargs)
 
         return wrapper

@@ -3,35 +3,41 @@
 """
 
 from skeletor.db import context
-from skeletor.util import decorators
+
+from skeletor.util.decorators import acquire_context
+from skeletor.util.decorators import bindfunction
+from skeletor.util.decorators import bindstaticmethod
+from skeletor.util.decorators import bindclassmethod
 
 
+@bindfunction
 def query(f):
-    return decorators.acquire_context(default_factory=context.DatabaseFactory)(f)
+    return acquire_context(default_factory=context.DatabaseFactory)(f)
 
 
+@bindfunction
 def mutator(f):
-    return decorators.acquire_context(default_factory=context.DatabaseFactory,
-                                      commit=True)(f)
+    return acquire_context(default_factory=context.DatabaseFactory,
+                           commit=True)(f)
 
 
+@bindstaticmethod
 def staticmethod_query(f):
-    return decorators.acquire_context(default_factory=context.DatabaseFactory,
-                                      decorator=staticmethod)(f)
+    return acquire_context(default_factory=context.DatabaseFactory)(f)
 
 
+@bindstaticmethod
 def staticmethod_mutator(f):
-    return decorators.acquire_context(default_factory=context.DatabaseFactory,
-                                      decorator=staticmethod,
-                                      commit=True)(f)
+    return acquire_context(default_factory=context.DatabaseFactory,
+                           commit=True)(f)
 
 
+@bindclassmethod
 def classmethod_query(f):
-    return decorators.acquire_context(default_factory=context.DatabaseFactory,
-                                      decorator=classmethod)(f)
+    return acquire_context(default_factory=context.DatabaseFactory)(f)
 
 
+@bindclassmethod
 def classmethod_mutator(f):
-    return decorators.acquire_context(default_factory=context.DatabaseFactory,
-                                      decorator=classmethod,
-                                      commit=True)(f)
+    return acquire_context(default_factory=context.DatabaseFactory,
+                           commit=True)(f)
