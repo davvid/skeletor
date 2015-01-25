@@ -6,7 +6,7 @@ and common application concerns such as logging and configuration.
 Configuration Files
 -------------------
 Skeletor can read json files with special directives to include other files.
-See (here)[examples/example.json] for an example.
+See (here)[tests/example.json] for an example.
 
 Logging
 -------
