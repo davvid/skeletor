@@ -11,7 +11,7 @@ SH ?= sh
 
 # Options
 flags ?=
-TESTCMD ?= $(NOSE) --with-doctest $(flags)
+TEST_CMD ?= $(NOSE) --with-doctest $(flags)
 
 PYTHON_DIRS := skeletor
 PYTHON_DIRS += tests
@@ -34,7 +34,7 @@ help:
 	$(MARKDOWN) $< >$@
 
 test:
-	$(NOSE) $(NOSEARGS) $(PYTHON_DIRS)
+	$(TEST_CMD) $(PYTHON_DIRS)
 .PHONY: test
 
 clean:
