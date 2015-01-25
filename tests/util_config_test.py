@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from skeletor.core import config
+from skeletor.util import config
 
 
 class ConfigTestCase(unittest.TestCase):
