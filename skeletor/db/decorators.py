@@ -5,39 +5,37 @@
 from skeletor.db import context
 
 from skeletor.util.decorators import acquire_context
-from skeletor.util.decorators import bindfunction
-from skeletor.util.decorators import bindstaticmethod
-from skeletor.util.decorators import bindclassmethod
+from skeletor.util.decorators import bindfunc
 
 
-@bindfunction
+@bindfunc()
 def query(f):
     return acquire_context(default_factory=context.DatabaseFactory)(f)
 
 
-@bindfunction
+@bindfunc()
 def mutator(f):
     return acquire_context(default_factory=context.DatabaseFactory,
                            commit=True)(f)
 
 
-@bindstaticmethod
+@bindfunc(decorator=staticmethod)
 def staticmethod_query(f):
     return acquire_context(default_factory=context.DatabaseFactory)(f)
 
 
-@bindstaticmethod
+@bindfunc(decorator=staticmethod)
 def staticmethod_mutator(f):
     return acquire_context(default_factory=context.DatabaseFactory,
                            commit=True)(f)
 
 
-@bindclassmethod
+@bindfunc(decorator=classmethod)
 def classmethod_query(f):
     return acquire_context(default_factory=context.DatabaseFactory)(f)
 
 
-@bindclassmethod
+@bindfunc(decorator=classmethod)
 def classmethod_mutator(f):
     return acquire_context(default_factory=context.DatabaseFactory,
                            commit=True)(f)

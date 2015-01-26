@@ -125,15 +125,22 @@ class acquire_context(object):
         return self.decorator(wrapper)
 
 
-class bindfunction(object):
-    """Allows fn.bind(foo=bar) when decorated on a function"""
+class bindfunc(object):
+    """Allows fn.bind(foo=bar) when decorated on a decorator
 
-    def __init__(self, fn, decorator=passthrough_decorator):
-        """This decorator is passed an inner decorator"""
-        self.fn = fn
+    This is a decorator decorator, which takes a decorator as input
+    and returns another decorator when applied, and grants decorators
+    the ability to do `mydecorator.bind(foo=bar)` and have it work without
+    having to repeat `foo=bar` everywhere.
+
+    """
+
+    def __init__(self, decorator=passthrough_decorator):
+        """:params decorator: outer decorator to apply"""
+        self.decorator = decorator
         self.args = ()
         self.kwargs = {}
-        self.decorator = decorator
+        self.fn = None
 
     def bind(self, *args, **kwargs):
         """bind() stashes arguments"""
@@ -144,27 +151,19 @@ class bindfunction(object):
     def __call__(self, f):
         """Invoke the inner decorator and return a bound function
 
-        __call__() is invoked when the function is ready to be decorated.
-        If we've gotten here then bind() was called and we must return the
-        final decorated function.
+        __call__ is called twice.  The first time we are given the real
+        function to decorate and return self so that we are called again
+        when applying the decorator to the target function.
+
+        The second time around we return the final, bound function.
 
         """
+        if self.fn is None:
+            # Store the decorator to decorate so that we can apply
+            self.fn = f
+            return self
         decorated = self.fn(f)
         return self.decorator(bind(*self.args, **self.kwargs)(decorated))
-
-
-class bindstaticmethod(bindfunction):
-    """Allows fn.bind(foo=bar) and returns a staticmethod"""
-
-    def __init__(self, f):
-        super(bindstaticmethod, self).__init__(f, decorator=staticmethod)
-
-
-class bindclassmethod(bindfunction):
-    """Allows fn.bind(foo=bar) and returns a classmethod"""
-
-    def __init__(self, f):
-        super(bindclassmethod, self).__init__(f, decorator=classmethod)
 
 
 class Context(object):
