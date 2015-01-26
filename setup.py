@@ -41,7 +41,7 @@ SETUP_ARGS = dict(
         'Programming Language :: Python',
     ],
     options={'clean': {'all': 1}},
-    packages=['skeletor', 'skeletor.core', 'skeletor.db'],
+    packages=['skeletor', 'skeletor.core', 'skeletor.db', 'skeletor.util'],
 )
 
 if __name__ == '__main__':
