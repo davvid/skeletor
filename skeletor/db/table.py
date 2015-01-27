@@ -24,6 +24,7 @@ class ScopedLogger(object):
 
 
 class Table(object):
+    """Run simple queries against specific tables"""
 
     def __init__(self, table, logger=None):
         self.table = table
