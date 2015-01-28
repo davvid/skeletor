@@ -25,7 +25,7 @@ class DefaultFactory(object):
 
     @staticmethod
     def create(**kwargs):
-        raise NotImplemented('create() is not implemented')
+        raise NotImplementedError('create() is not implemented')
 
 
 
