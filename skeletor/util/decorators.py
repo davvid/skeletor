@@ -20,8 +20,13 @@ class DefaultFactory(object):
     @staticmethod
     def filter_kwargs(kwargs):
         """Filter context arguments out from the function's kwargs"""
-        return dict([(key, kwargs.pop(key, None))
-                     for key in ('context', 'default_factory')])
+        filtered = {}
+        for key in ('context', 'default_factory'):
+            try:
+                filtered[key] = kwargs.pop(key)
+            except KeyError:
+                pass
+        return filtered
 
     @staticmethod
     def create(**kwargs):
@@ -115,9 +120,12 @@ class acquire_context(object):
         @functools.wraps(f)
         def wrapper(*args, **kwargs):
             """Wraps f() to provide a context as a keyword argument"""
-            context_kwargs = self.default_factory.filter_kwargs(kwargs)
-            context_kwargs['default_factory'] = self.default_factory
-            context_kwargs.update(self.kwargs)
+            factory_kwargs = self.default_factory.filter_kwargs(kwargs)
+            factory_kwargs['default_factory'] = self.default_factory
+
+            context_kwargs = self.kwargs.copy()
+            context_kwargs.update(factory_kwargs)
+
             with self.default_contextmgr(*self.args, **context_kwargs) as context:
                 kwargs['context'] = context
                 return f(*args, **kwargs)
