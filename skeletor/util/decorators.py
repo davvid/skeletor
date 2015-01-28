@@ -89,18 +89,18 @@ class acquire_context(object):
     """
 
     def __init__(self,
-                 decorator=None,
-                 default_factory=None,
+                 default_factory,
                  default_contextmgr=None,
+                 decorator=None,
                  *args, **kwargs):
-        # A decorator allows us to automatically wrap our output
-        self.decorator = decorator or passthrough_decorator
         # The default factory constructs context instances and
         # provides :func:`filter_kwargs()` to separate factory arguments
         # from function arguments.
         self.default_factory = default_factory
         # Allows overriding the context manager
         self.default_contextmgr = default_contextmgr or DefaultContextManager
+        # Wraps our function with a user-supplied decorator
+        self.decorator = decorator or passthrough_decorator
         # Factory arguments
         self.args = args
         self.kwargs = kwargs
