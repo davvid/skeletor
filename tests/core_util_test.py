@@ -50,6 +50,7 @@ class UtilTestCase(unittest.TestCase):
         self.assertFalse(a['fez'])
         self.assertTrue(a['ringo'])
 
+        self.assertTrue(a['foo']['bar'])
         self.assertEqual(a['foo']['baz']['answer'], 42)
 
 
