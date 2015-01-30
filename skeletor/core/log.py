@@ -53,18 +53,19 @@ class Formatter(logging.Formatter):
         # Save the original format configured by the user
         # when the logger formatter was instantiated
         orig_fmt = self._fmt
+        levelno = record.levelno
 
         # Replace the original format with one customized by logging level
-        if record.levelno == logging.DEBUG:
+        if levelno == logging.DEBUG:
             self._fmt = self.debug_fmt
 
-        elif record.levelno == logging.INFO:
+        elif levelno == logging.INFO:
             self._fmt = self.info_fmt
 
-        elif record.levelno == logging.ERROR:
+        elif levelno == logging.ERROR:
             self._fmt = self.error_fmt
 
-        elif record.levelno == logging.WARN:
+        elif levelno == logging.WARN:
             self._fmt = self.warn_fmt
 
         # Call the original formatter class to do the grunt work
