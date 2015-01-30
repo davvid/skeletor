@@ -21,7 +21,7 @@ exec(open(version).read(), scope)
 SETUP_ARGS = dict(
     name='skeletor',
     version=scope['VERSION'],
-    description='application skeleton',
+    description='minimalist application skeleton',
     long_description='skeletor is a reusable application skeleton',
     author='David Aguilar',
     author_email='davvid@gmail.com',
@@ -41,7 +41,11 @@ SETUP_ARGS = dict(
         'Programming Language :: Python',
     ],
     options={'clean': {'all': 1}},
-    packages=['skeletor', 'skeletor.core', 'skeletor.db', 'skeletor.util'],
+    packages=['skeletor',
+              'skeletor.core',
+              'skeletor.cli',
+              'skeletor.db',
+              'skeletor.util'],
 )
 
 if __name__ == '__main__':
