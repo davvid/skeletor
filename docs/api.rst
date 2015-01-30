@@ -57,8 +57,8 @@ skeletor API documenation
     :members:
     :undoc-members:
 
-:mod:`skeletor.core.util` -- Library version
---------------------------------------------
+:mod:`skeletor.core.version` -- Library version
+-----------------------------------------------
 
 .. automodule:: skeletor.core.version
     :members:
@@ -91,8 +91,8 @@ skeletor API documenation
 :mod:`skeletor.db` -- SQLAlchemy powertools
 ===========================================
 
-:mod:`skeletor.db.context` -- Database contexts
------------------------------------------------
+:mod:`skeletor.db.context` -- Default database context
+------------------------------------------------------
 
 .. automodule:: skeletor.db.context
     :members:
