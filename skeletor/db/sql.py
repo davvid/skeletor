@@ -1,6 +1,6 @@
-from sqlalchemy import and_
+from functools import reduce
 
-from skeletor.core.compat import reduce
+from sqlalchemy import and_
 
 
 def rowdict(row):
@@ -58,7 +58,7 @@ def update_values(table, where_expr, **values):
 
 def update(table, table_id, **values):
     """Update a specific row's values by ID"""
-    return update_values(table, table.c.id==table_id, **values).execute()
+    return update_values(table, table.c.id == table_id, **values).execute()
 
 
 def delete(table, operator=and_, **values):

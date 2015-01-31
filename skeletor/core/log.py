@@ -41,9 +41,9 @@ class TextDecorator(object):
 class Formatter(logging.Formatter):
     """Custom formatter to allow a custom output format per level"""
 
-    debug_fmt  = 'debug: %(module)s:%(lineno)d: %(msg)s'
+    debug_fmt = 'debug: %(module)s:%(lineno)d: %(msg)s'
     warn_fmt = 'warning: %(message)s'
-    error_fmt  = 'error: %(message)s'
+    error_fmt = 'error: %(message)s'
     info_fmt = '%(message)s'
 
     def __init__(self, fmt='%(levelno)s: %(msg)s'):

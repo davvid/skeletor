@@ -21,7 +21,7 @@ class Menu(object):
 
         :param title: menu title
         :param prompt: input prompt
-        :param errormsg: error message to display when an invalid option is chosen
+        :param errormsg: message to display when an invalid option is chosen
         :param get_input: :func:`func(str)` that returns a :class:`str` choice
         :param case_sensitive: makes responses case sensitive, otherwise Q == q.
 
@@ -78,7 +78,7 @@ class Menu(object):
             if underline:
                 logger.info(underline * len(title))
 
-            for key, (description , callback) in options:
+            for key, (description, callback) in options:
                 logger.info(self.fmt % dict(key=key, description=description))
 
             answer = self.get_input(self.prompt)

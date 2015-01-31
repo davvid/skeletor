@@ -74,7 +74,9 @@ class DBDecoratorsTestCase(unittest.TestCase):
 
     def test_update_user(self):
         context = self.context
-        user = testlib.User.new(name=self.name, email=self.email, context=context)
+        user = testlib.User.new(name=self.name,
+                                email=self.email,
+                                context=context)
         self.assertEqual(user['name'], self.name)
         user_id = user['id']
 

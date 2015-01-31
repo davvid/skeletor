@@ -122,10 +122,10 @@ class acquire_context(object):
             factory_kwargs = self.default_factory.filter_kwargs(kwargs)
             factory_kwargs['default_factory'] = self.default_factory
 
-            context_kwargs = self.kwargs.copy()
-            context_kwargs.update(factory_kwargs)
+            ctx_kwargs = self.kwargs.copy()
+            ctx_kwargs.update(factory_kwargs)
 
-            with self.default_contextmgr(*self.args, **context_kwargs) as context:
+            with self.default_contextmgr(*self.args, **ctx_kwargs) as context:
                 kwargs['context'] = context
                 return f(*args, **kwargs)
 

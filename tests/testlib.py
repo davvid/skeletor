@@ -34,10 +34,11 @@ class Schema(schema.Schema):
     def __init__(self):
         schema.Schema.__init__(self)
 
-        self.add_table('users',
-                Column('id', Integer, primary_key=True, autoincrement=True),
-                Column('name', Text),
-                Column('email', Text, unique=True))
+        self.add_table(
+            'users',
+            Column('id', Integer, primary_key=True, autoincrement=True),
+            Column('name', Text),
+            Column('email', Text, unique=True))
 
 
 class User(object):

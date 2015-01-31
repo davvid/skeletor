@@ -285,8 +285,9 @@ class DecoratorsTestCase(unittest.TestCase):
 
     def test_acquire_context_passes_context_and_others(self):
         ctx = decorators.Context()
-        result = acquires_custom_context('arg1', 'arg2', context=ctx, not_foo='bar')
-
+        result = acquires_custom_context('arg1', 'arg2',
+                                         context=ctx,
+                                         not_foo='bar')
         expect = ('arg1', 'arg2')
         actual = result[0]
         self.assertEqual(expect, actual)

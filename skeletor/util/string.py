@@ -9,6 +9,7 @@ from skeletor.core.compat import unicode
 
 _expandvars_re = None
 
+
 def expandvars(path, environ=None):
     """
     Like os.path.expandvars, but operates on a provided dictionary
@@ -18,7 +19,8 @@ def expandvars(path, environ=None):
     >>> expandvars('$foo', environ={'foo': 'bar'}) == 'bar'
     True
 
-    >>> expandvars('$foo:$bar:${foo}${bar}', environ={'foo': 'a', 'bar': 'b'})  == 'a:b:ab'
+    >>> environ = {'foo': 'a', 'bar': 'b'}
+    >>> expandvars('$foo:$bar:${foo}${bar}', environ=environ)  == 'a:b:ab'
     True
 
     """

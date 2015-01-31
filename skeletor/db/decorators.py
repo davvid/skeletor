@@ -43,7 +43,8 @@ them to a custom creator function.  First, we'll define a simple schema.
         def __init__(self):
             schema.Schema.__init__(self)
             self.add_table('users',
-                           Column('id', Integer, autoincrement=True, primary_key=True),
+                           Column('id', Integer,
+                                  autoincrement=True, primary_key=True),
                            Column('name', String),
                            Column('email', String, unique=True))
 
