@@ -44,3 +44,7 @@ clean:
 
 tags:
 	$(FIND) $(PYTHON_DIRS) -name '*.py' -print0 | xargs -0 $(CTAGS) -f tags
+
+html:
+	$(MAKE) -C docs html
+.PHONY: html
