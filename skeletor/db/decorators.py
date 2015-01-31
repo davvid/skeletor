@@ -1,57 +1,55 @@
 """Decorators to simplify database access
 
-skeletor database decorators makes it easy to provide access to common schema
-or other database resource.  These are referred to as contexts.
+skeletor database decorators makes it easy to provide access to a common
+schema or other database resource.  These are referred to as contexts.
 
-Contexts provide access to a sqlalchemy session and provide it to their
-decorated functions in the `context` keyword argument.
+Contexts manage a sqlalchemy session and provide it to their decorated
+functions through their `context` keyword argument.
 
 Contexts are created by a factory provided by the skeletor library,
-:class:`skeletor.util.context.DatabaseFactory`.  In order to customize
-how the context is created, the default factory support a `creator`
-keyword argument that is called with a single `commit=<boolean>` argument
-to signify whether the returned context should acquire a transaction.
+:class:`skeletor.db.context.DatabaseFactory`.  In order to customize
+how the context is created, the default factory supports a `creator`
+keyword argument that is called with a single `commit=True/False`
+argument to signify whether the returned context should acquire a
+transaction.
 
-skeletor provides decorators for read-only queries and transactional mutators.
-Mutators will construct contexts with the keyword argument `commit=True`.
-An internal context manager catches exceptions created in the wrapped
-functions and automatically rollback mutator transactions when an
-exception occurs.  Upon completion of a mutator function, the transaction is
-committed.
+skeletor provides decorators for read-only queries and transactional
+mutators.  Mutators will construct contexts with the keyword argument
+`commit=True`.  An internal context manager catches exceptions created
+in the wrapped functions and automatically rolls back mutator
+transactions when an exception occurs.  Upon completion of a mutator
+function, the transaction is committed.
 
-When multiple mutator functions need to be chained then the `context` keyword
-argument must be used when calling out to other decorated context functions.
-e.g. `some_func(context=context)` will ensure that the context is reused and
-passed through as-is rather than having to construct a new context for that
-call.  This is also a good thing to do in general, even with queries, since it
-will reuse the existing session instead of creating a new one for that call.
+When multiple mutator functions need to be chained then the `context`
+keyword argument must be passed along when calling out to other
+decorated context functions.  e.g. `some_func(context=context)` will
+ensure that the context is reused and passed through as-is rather than
+having to construct a new context for that call.  This is a good thing
+to do in general when calling other wrapped functions since it will
+reuse the existing session instead of creating a new one for that call.
 
 The expected use case is that you can use these decorators while binding
-them to a custom creator function.
-
-First, we'll define a simple schema.
+them to a custom creator function.  First, we'll define a simple schema.
 
 .. sourcecode:: python
 
     from sqlachemy import Column, Integer, String
 
-    from skeletor.db import schema
-    from skeletor.db import context
-    from skeletor.db import decorators
-    from skeletor.db import sql
-
+    from skeletor.db import schema, context, decorators
 
     class Schema(schema.Schema):
+        # A schema with a single users table: this is __not__ an ORM
+
         def __init__(self):
             schema.Schema.__init__(self)
             self.add_table('users',
-                Column('id', Integer, autoincrement=True, primary_key=True),
-                Column('name', String),
-                Column('email', String, unique=True))
+                           Column('id', Integer, autoincrement=True, primary_key=True),
+                           Column('name', String),
+                           Column('email', String, unique=True))
 
-
-    def new_schema():
-        return Schema().bind_url('sqlite:///:memory:')
+        @staticmethod
+        def get():
+            return Schema().bind_url('sqlite:///:memory:')
 
 
 Next, we'll provide a :func:`creator` function that will wrap
@@ -61,7 +59,7 @@ This class provides the automatic commit/rollback logic.
 .. sourcecode:: python
 
     def creator(commit=False):
-        return context.DatabaseContext(context=new_schema())
+        return context.DatabaseContext(context=Schema.get())
 
 
 To use the our custom creator with a free-form function we
