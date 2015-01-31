@@ -8,6 +8,7 @@ skeletor API documenation
 
     import skeletor
     import skeletor.cli
+    import skeletor.cli.menu
     import skeletor.cli.options
     import skeletor.core
     import skeletor.core.compat
@@ -128,4 +129,10 @@ skeletor API documenation
 ---------------------------------------------------------------------
 
 .. automodule:: skeletor.cli.options
+    :members:
+
+:mod:`skeletor.cli.menu` -- Terminal menus
+------------------------------------------
+
+.. automodule:: skeletor.cli.menu
     :members:
