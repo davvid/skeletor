@@ -33,7 +33,6 @@ class DefaultFactory(object):
         raise NotImplementedError('create() is not implemented')
 
 
-
 class DefaultContextManager(object):
 
     def __init__(self, context=None, default_factory=None, *args, **kwargs):
@@ -143,9 +142,9 @@ class bindfunc(object):
 
     """
 
-    def __init__(self, decorator=passthrough_decorator):
+    def __init__(self, decorator=None):
         """:params decorator: outer decorator to apply"""
-        self.decorator = decorator
+        self.decorator = decorator or passthrough_decorator
         self.args = ()
         self.kwargs = {}
         self.fn = None
@@ -169,6 +168,7 @@ class bindfunc(object):
         if self.fn is None:
             # Store the decorator to decorate so that we can apply
             self.fn = f
+            functools.update_wrapper(self, f)
             return self
         decorated = self.fn(f)
         return self.decorator(bind(*self.args, **self.kwargs)(decorated))
