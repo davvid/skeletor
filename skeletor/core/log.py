@@ -69,7 +69,7 @@ class Formatter(logging.Formatter):
             self._fmt = self.warn_fmt
 
         # Call the original formatter class to do the grunt work
-        result = super(Formatter, self).format(record)
+        result = logging.Formatter.format(self, record)
 
         # Restore the original format configured by the user
         self._fmt = orig_fmt
