@@ -7,6 +7,8 @@ skeletor API documenation
 .. testsetup:: *
 
     import skeletor
+    import skeletor.cli
+    import skeletor.cli.options
     import skeletor.core
     import skeletor.core.compat
     import skeletor.core.log
@@ -117,4 +119,13 @@ skeletor API documenation
 ---------------------------------------------------
 
 .. automodule:: skeletor.db.table
+    :members:
+
+:mod:`skeletor.cli` -- Command-line utilities
+=============================================
+
+:mod:`skeletor.cli.options` -- Common argparse.ArgumentParser options
+---------------------------------------------------------------------
+
+.. automodule:: skeletor.cli.options
     :members:
