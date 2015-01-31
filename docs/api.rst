@@ -39,28 +39,24 @@ skeletor API documenation
 
 .. automodule:: skeletor.core.json
     :members:
-    :undoc-members:
 
 :mod:`skeletor.core.log` -- Logging
 -----------------------------------
 
 .. automodule:: skeletor.core.log
     :members:
-    :undoc-members:
 
 :mod:`skeletor.core.util` -- Utilities
 --------------------------------------
 
 .. automodule:: skeletor.core.util
     :members:
-    :undoc-members:
 
 :mod:`skeletor.core.version` -- Library version
 -----------------------------------------------
 
 .. automodule:: skeletor.core.version
     :members:
-    :undoc-members:
 
 :mod:`skeletor.util` -- Reusable utilities
 ==========================================
@@ -70,21 +66,18 @@ skeletor API documenation
 
 .. automodule:: skeletor.util.config
     :members:
-    :undoc-members:
 
 :mod:`skeletor.util.decorators` -- Function decorators for managing contexts
 ----------------------------------------------------------------------------
 
 .. automodule:: skeletor.util.decorators
     :members:
-    :undoc-members:
 
 :mod:`skeletor.util.string` -- String utilities
 -----------------------------------------------
 
 .. automodule:: skeletor.util.string
     :members:
-    :undoc-members:
 
 :mod:`skeletor.db` -- SQLAlchemy powertools
 ===========================================
@@ -94,14 +87,12 @@ skeletor API documenation
 
 .. automodule:: skeletor.db.context
     :members:
-    :undoc-members:
 
 :mod:`skeletor.db.decorators` -- Decorators for providing contexts
 ------------------------------------------------------------------
 
 .. automodule:: skeletor.db.decorators
    :members:
-   :undoc-members:
 
 .. autofunction:: skeletor.db.decorators.query
 .. autofunction:: skeletor.db.decorators.mutator
@@ -115,18 +106,15 @@ skeletor API documenation
 
 .. automodule:: skeletor.db.schema
     :members:
-    :undoc-members:
 
 :mod:`skeletor.db.sql` -- SQLAlchemy helpers and utilities
 ----------------------------------------------------------
 
 .. automodule:: skeletor.db.sql
     :members:
-    :undoc-members:
 
 :mod:`skeletor.db.table` -- Query SQLAlchemy tables
 ---------------------------------------------------
 
 .. automodule:: skeletor.db.table
     :members:
-    :undoc-members:
