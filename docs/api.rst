@@ -33,8 +33,6 @@ skeletor API documenation
 -----------------------------------------------------
 
 .. automodule:: skeletor.core.compat
-    :members:
-    :undoc-members:
 
 :mod:`skeletor.core.json` -- JSON utilities
 -------------------------------------------
@@ -102,8 +100,15 @@ skeletor API documenation
 ------------------------------------------------------------------
 
 .. automodule:: skeletor.db.decorators
-    :members:
-    :undoc-members:
+   :members:
+   :undoc-members:
+
+.. autofunction:: skeletor.db.decorators.query
+.. autofunction:: skeletor.db.decorators.mutator
+.. autofunction:: skeletor.db.decorators.staticmethod_query
+.. autofunction:: skeletor.db.decorators.staticmethod_mutator
+.. autofunction:: skeletor.db.decorators.classmethod_query
+.. autofunction:: skeletor.db.decorators.classmethod_mutator
 
 :mod:`skeletor.db.schema` -- Schema definitions
 -----------------------------------------------

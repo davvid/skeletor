@@ -37,7 +37,7 @@ version = skeletor.core.version.VERSION
 release = version
 
 exclude_trees = []
-pygments_style = 'sphinx'
+pygments_style = 'default'
 
 html_theme = 'default'
 html_static_path = filter(os.path.exists, ['static'])
