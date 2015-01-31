@@ -43,7 +43,7 @@ First, we'll define a simple schema.
 
     class Schema(schema.Schema):
         def __init__(self):
-            super(Schema, self).__init__()
+            schema.Schema.__init__(self)
             self.add_table('users',
                 Column('id', Integer, autoincrement=True, primary_key=True),
                 Column('name', String),

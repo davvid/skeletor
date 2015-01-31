@@ -48,7 +48,7 @@ class JSONConfig(Config):
     """Read configuration values from a JSON file"""
 
     def __init__(self, path, environ=None):
-        super(JSONConfig, self).__init__(path, environ=environ)
+        Config.__init__(self, path, environ=environ)
 
     def read(self):
         if self._data:

@@ -4,7 +4,7 @@ from skeletor.util import decorators
 class DatabaseContext(decorators.Context):
 
     def __init__(self, creator=None, context=None, commit=False):
-        super(DatabaseContext, self).__init__()
+        decorators.Context.__init__(self)
         if context is None:
             context = creator(commit=commit)
         self._context = context

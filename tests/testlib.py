@@ -32,7 +32,7 @@ def new_context(ctx=None, commit=False):
 class Schema(schema.Schema):
 
     def __init__(self):
-        super(Schema, self).__init__()
+        schema.Schema.__init__(self)
 
         self.add_table('users',
                 Column('id', Integer, primary_key=True, autoincrement=True),
