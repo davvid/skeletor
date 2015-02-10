@@ -32,9 +32,8 @@ class Table(object):
 
     @mutator
     def new(self, context=None, **kwargs):
-        table = context.tables[self.table]
         try:
-            row_id = table.insert(kwargs).execute().lastrowid
+            row_id = self.insert(kwargs, context=context)
         except IntegrityError as e:
             self.logger.error('new: integrity error in %s with kwargs %s (%s)'
                               % (self.table, repr(kwargs), repr(e)))
@@ -43,6 +42,7 @@ class Table(object):
             self.logger.error('new: unknown error in %s with kwargs %s (%s)'
                               % (self.table, repr(kwargs), repr(e)))
             return None
+        table = context.tables[self.table]
         return sql.select_one(table, id=row_id)
 
     @mutator
@@ -63,6 +63,11 @@ class Table(object):
     @query
     def find_by_id(self, row_id, context=None):
         return self.filter_by(id=row_id, context=context)
+
+    @mutator
+    def insert(self, values, context=None):
+        table = context.tables[self.table]
+        return table.insert(values).execute().lastrowid
 
     @mutator
     def delete(self, context=None, **filters):
