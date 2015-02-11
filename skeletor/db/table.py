@@ -61,6 +61,11 @@ class Table(object):
         return sql.select_one(table, **filters)
 
     @query
+    def select_all(self, context=None, **filters):
+        table = context.tables[self.table]
+        return sql.select_all(table, **filters)
+
+    @query
     def find_by_id(self, row_id, context=None):
         return self.filter_by(id=row_id, context=context)
 
