@@ -31,6 +31,9 @@ class Table(object):
         self.table = table
         self.logger = ScopedLogger(self, logger=logger)
 
+    def get(self, context=None):
+        return context.tables[self.table]
+
     @mutator
     def new(self, context=None, **kwargs):
         try:
