@@ -1,3 +1,4 @@
+from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 
 from skeletor.core import log
@@ -56,9 +57,9 @@ class Table(object):
         return sql.fetchall(table)
 
     @query
-    def filter_by(self, context=None, **filters):
+    def filter_by(self, operator=and_, context=None, **filters):
         table = context.tables[self.table]
-        return sql.select_one(table, **filters)
+        return sql.select_one(table, operator=operator, **filters)
 
     @query
     def select_all(self, context=None, **filters):
