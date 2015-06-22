@@ -27,9 +27,12 @@ class ScopedLogger(object):
 class Table(object):
     """Run simple queries against specific tables"""
 
-    def __init__(self, table, logger=None):
+    def __init__(self, table, logger=None, verbose=False):
         self.table = table
-        self.logger = ScopedLogger(self, logger=logger)
+        self.verbose = verbose
+        if verbose:
+            logger = ScopedLogger(self, logger=logger)
+        self.logger = logger
 
     def get(self, context=None):
         return context.tables[self.table]
@@ -39,12 +42,14 @@ class Table(object):
         try:
             row_id = self.insert(kwargs, context=context)
         except IntegrityError as e:
-            self.logger.error('new: integrity error in %s with kwargs %s (%s)'
-                              % (self.table, repr(kwargs), repr(e)))
+            if self.verbose:
+                self.logger.error('new: integrity error in %s -> %s (%s)'
+                                  % (self.table, repr(kwargs), repr(e)))
             return None
         except BaseException as e:
-            self.logger.error('new: unknown error in %s with kwargs %s (%s)'
-                              % (self.table, repr(kwargs), repr(e)))
+            if self.verbose:
+                self.logger.error('new: unknown error in %s -> %s (%s)'
+                                  % (self.table, repr(kwargs), repr(e)))
             return None
         table = self.get(context=context)
         return sql.select_one(table, id=row_id)
