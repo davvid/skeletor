@@ -46,27 +46,27 @@ class Table(object):
             self.logger.error('new: unknown error in %s with kwargs %s (%s)'
                               % (self.table, repr(kwargs), repr(e)))
             return None
-        table = context.tables[self.table]
+        table = self.get(context=context)
         return sql.select_one(table, id=row_id)
 
     @mutator
     def update(self, row_id, context=None, **kwargs):
-        table = context.tables[self.table]
+        table = self.get(context=context)
         return sql.update(table, row_id, **kwargs)
 
     @query
     def fetchall(self, context=None):
-        table = context.tables[self.table]
+        table = self.get(context=context)
         return sql.fetchall(table)
 
     @query
     def filter_by(self, operator=and_, context=None, **filters):
-        table = context.tables[self.table]
+        table = self.get(context=context)
         return sql.select_one(table, operator=operator, **filters)
 
     @query
     def select_all(self, context=None, **filters):
-        table = context.tables[self.table]
+        table = self.get(context=context)
         return sql.select_all(table, **filters)
 
     @query
@@ -75,10 +75,10 @@ class Table(object):
 
     @mutator
     def insert(self, values, context=None):
-        table = context.tables[self.table]
+        table = self.get(context=context)
         return table.insert(values).execute().lastrowid
 
     @mutator
-    def delete(self, context=None, **filters):
-        table = context.tables[self.table]
-        return sql.delete(table, **filters)
+    def delete(self, operator=and_, context=None, **filters):
+        table = self.get(context=context)
+        return sql.delete(table, operator=operator, **filters)
