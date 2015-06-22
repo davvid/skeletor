@@ -191,6 +191,7 @@ class Context(object):
             self.success()
         else:
             self.error()
+        return False
 
     def success(self):
         """Called when exiting a context successfully"""
