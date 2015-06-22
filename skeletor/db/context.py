@@ -34,8 +34,6 @@ class DatabaseContext(decorators.Context):
         """Delegate attributes to the context"""
         return getattr(self._context, name)
 
-    # TODO remove __getitem__ by doing foo.tables[table] rather than foo[table]
-    # in table.py
     def __getitem__(self, item):
         """Delegate item lookup to the context"""
         return self._context[item]
