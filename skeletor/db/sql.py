@@ -31,9 +31,20 @@ def where(table, operator=and_, **values):
     return reduce_filters(table, eq_column, operator=operator, **values)
 
 
+def iwhere(table, operator=and_, **values):
+    """Return a `where` expression to combine column ILIKE value criteria"""
+    # Create a list of (column ILIKE value) filters and combine them
+    return reduce_filters(table, ilike_column, operator=operator, **values)
+
+
 def eq_column(table, column, value):
     """column == value"""
     return getattr(table.c, column) == value
+
+
+def ilike_column(table, column, value):
+    """column ILIKE value"""
+    return getattr(table.c, column).ilike(value)
 
 
 def reduce_filters(table, fn, operator=and_, **values):
