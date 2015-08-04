@@ -70,6 +70,12 @@ class Table(object):
         return sql.select_one(table, operator=operator, **filters)
 
     @query
+    def ifilter_by(self, operator=and_, context=None, **filters):
+        table = self.get(context=context)
+        return sql.select_one(table, where=sql.iwhere,
+                              operator=operator, **filters)
+
+    @query
     def select_all(self, context=None, **filters):
         table = self.get(context=context)
         return sql.select_all(table, **filters)
