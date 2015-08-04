@@ -27,9 +27,20 @@ def fetchone(table, where_expr):
 
 def where(table, operator=and_, **values):
     """Return a `where` expression to combine column=value criteria"""
+    # Create a list of (column == value) filters and combine them
+    return reduce_filters(table, eq_column, operator=operator, **values)
+
+
+def eq_column(table, column, value):
+    """column == value"""
+    return getattr(table.c, column) == value
+
+
+def reduce_filters(table, fn, operator=and_, **values):
+    """Return a `where` expression to combine column=value criteria"""
     # Create a list of (column == value) filters and combine them using the
     # provided combinator.
-    filters = [(getattr(table.c, k) == v) for k, v in values.items()]
+    filters = [fn(table, k, v) for k, v in values.items()]
     # If we have multiple filters then combine them using AND by default,
     # otherwise use the first one as-is.
     if len(filters) == 1:
