@@ -61,13 +61,13 @@ def reduce_filters(table, fn, operator=and_, **values):
     return expr
 
 
-def select_one(table, operator=and_, **values):
+def select_one(table, where=where, operator=and_, **values):
     """Select one row filtered by `values` column=value criteria"""
     where_expr = where(table, operator=operator, **values)
     return fetchone(table, where_expr)
 
 
-def select_all(table, operator=and_, **values):
+def select_all(table, where=where, operator=and_, **values):
     """Select all rows filtered by `values` column=value criteria"""
     where_expr = where(table, operator=operator, **values)
     return table.select().where(where_expr).execute().fetchall()
@@ -83,7 +83,7 @@ def update(table, table_id, **values):
     return update_values(table, table.c.id == table_id, **values).execute()
 
 
-def delete(table, operator=and_, **values):
+def delete(table, operator=and_, where=where, **values):
     """Delete rows from a table based on the filter values"""
     where_expr = where(table, operator=operator, **values)
     return table.delete(where_expr).execute()
