@@ -15,14 +15,22 @@ def rowdicts(rows):
     return [dict(r) for r in rows]
 
 
+def exec_fetchall(expr):
+    return expr.execute().fetchall()
+
+
+def exec_fetchone(expr):
+    return expr.execute().fetchone()
+
+
 def fetchall(table):
-    return table.select().execute().fetchall()
+    return exec_fetchall(table.select())
 
 
 def fetchone(table, where_expr):
     """Select one row from a table filtered by a `where` expression"""
     expr = table.select().where(where_expr)
-    return rowdict(expr.execute().fetchone())
+    return rowdict(exec_fetchone(expr))
 
 
 def where(table, operator=and_, **values):
@@ -70,7 +78,8 @@ def select_one(table, where=where, operator=and_, **values):
 def select_all(table, where=where, operator=and_, **values):
     """Select all rows filtered by `values` column=value criteria"""
     where_expr = where(table, operator=operator, **values)
-    return table.select().where(where_expr).execute().fetchall()
+    expr = table.select().where(where_expr)
+    return exec_fetchall(expr)
 
 
 def update_values(table, where_expr, **values):
